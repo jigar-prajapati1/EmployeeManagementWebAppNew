@@ -52,7 +52,7 @@
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" id="btnsave" />
+        <input type="submit" value="AddEmployee" class="btn btn-primary" id="btnsave" />
     </div>
    
 }
@@ -92,5 +92,53 @@
                 });
             });
         });
+        //disable button code in jquery
+            $(document).ready(function () {
+                // Attach event listeners to your form fields for validation
+                $('#Name').on('input', validateForm);
+            $('#DesignationId').on('change', validateForm);
+            $('#Salary').on('input', validateForm);
+            $('#DateOfBirth').on('input', validateForm);
+            $('#Email').on('input', validateForm);
+            $('#Address').on('input', validateForm);
+
+            function validateForm() {
+                // Perform your validation logic
+                var isValid = true;
+
+            // Example validation logic for the fields
+            if ($('#Name').val().trim() === '') {
+                isValid = false;
+                }
+
+            if ($('#DesignationId').val() === '') {
+                isValid = false;
+                }
+
+            if ($('#Salary').val().trim() === '') {
+                isValid = false;
+                }
+
+            if ($('#DateOfBirth').val().trim() === '') {
+                isValid = false;
+                }
+
+            if ($('#Email').val().trim() === '') {
+                isValid = false;
+                }
+
+            if ($('#Address').val().trim() === '') {
+                isValid = false;
+                }
+
+            // Enable or disable the save button based on validation result
+            if (isValid) {
+                $('#btnsave').removeAttr('disabled');
+                } else {
+                $('#btnsave').attr('disabled', 'disabled');
+                }
+            }
+        });
+   
     </script>
 }

@@ -287,7 +287,6 @@
     <Content Include="Views\Employee\AddEmployee.cshtml" />
     <Content Include="Views\Employee\EditEmployee.cshtml" />
     <Content Include="Views\Employee\GetAll.cshtml" />
-    <Content Include="Views\Employee\DeleteEmployee.cshtml" />
     <Content Include="Views\Employee\GetEmployeeById.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -26,22 +26,14 @@ namespace EmployeeManagementApp.Controllers
             try
             {
                 var employee = _employeeService.GetEmployeeById(id);
-
-                if (employee == null)
-                {
-                    ViewBag.ErrorMessage = "Employee not found.";
-                    return View("Error");
-                }
                 return View(employee);
-               
             }
-            catch (Exception ex)
+            catch
             {
-                ViewBag.ErrorMessage = "An error occurred: " + ex.Message;
-                return View("Error");
+                ViewBag.ErrorMessage = "Employee not found.";
             }
+            return View();
         }
-
         [HttpGet]
         public ActionResult AddEmployee()
         {
@@ -63,16 +55,16 @@ namespace EmployeeManagementApp.Controllers
                 {
                     //save image in server
                     HttpPostedFileBase file = Request.Files[0];
-                    string firstname = file.FileName;
+                    string firstName = file.FileName;
                     string path = Server.MapPath("~/Images/");
-                    string st = path + firstname;
-                    file.SaveAs(path + firstname);
-                    empDetail.ProfilePicture = firstname;
+                    string combine = path + firstName;
+                    file.SaveAs(path + firstName);
+                    empDetail.ProfilePicture = firstName;
                 }
                 //pass details to repository
                 _employeeService.AddEmployee(empDetail);
+                TempData["Success"] = "Employee Created Successfully";
                 return RedirectToAction("GetAll");
-               
             }
             catch(Exception ex)
             {
@@ -116,15 +108,16 @@ namespace EmployeeManagementApp.Controllers
                 {
                     // Save image on the server
                     HttpPostedFileBase file = Request.Files[0];
-                    string firstname = file.FileName;
+                    string firstName = file.FileName;
                     string path = Server.MapPath("~/Images/");
-                    string st = path + firstname;
-                    file.SaveAs(path + firstname);
-                    detail.ProfilePicture = firstname;
+                    string combine = path + firstName;
+                    file.SaveAs(path + firstName);
+                    detail.ProfilePicture = firstName;
                 }
-                // Update employee details using the service
-                _employeeService.UpdateEmployee(detail);
-                return RedirectToAction("GetAll");
+                    // Update employee details using the service
+                   _employeeService.UpdateEmployee(detail);
+                   TempData["Success"] = "Employee Updated Successfully";
+                   return RedirectToAction("GetAll");
             }
             catch (Exception ex)
             {
@@ -136,19 +129,18 @@ namespace EmployeeManagementApp.Controllers
         /// <returns>
         ///   <br />
         /// </returns>
-        [HttpGet]
+        [HttpPost]
         public ActionResult DeleteEmployee(int? id)
         {
             try
             {
                 _employeeService.DeleteEmployee(id);
-               
             }
-            catch
+            catch(Exception ex)
             {
-                ViewBag.AlertMsg = "Failed to delete employee details";
+                throw ex; 
             }
-            return View("DeleteEmployee");
+            return RedirectToAction("GetAll");
         }
         /// <summary>Gets all.</summary>
         /// <returns>

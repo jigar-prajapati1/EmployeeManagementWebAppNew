@@ -64,18 +64,11 @@
             @Html.DisplayFor(model => model.Address)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Designation)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Designation)
-        </dd>
+        
 
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "EditEmployee", new { id = Model?.Id }) |
-    @Html.ActionLink("Delete", "DeleteEmployee", new { id = Model?.Id }) |
     @Html.ActionLink("Back to List", "GetAll")
 </p>
