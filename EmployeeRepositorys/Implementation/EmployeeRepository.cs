@@ -13,12 +13,16 @@ namespace EmployeeRepositorys.Implement
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public SqlConnection con;
+        private readonly string connectionString;
+
         public EmployeeRepository()
         {
-            // Retrieve connection string from configuration file
-            string constr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
-            con = new SqlConnection(constr);
+            connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
+        }
+
+        private IDbConnection CreateConnection()
+        {
+            return new SqlConnection(connectionString);
         }
         /// <summary>Gets the designations.</summary>
         /// <returns>
@@ -28,7 +32,7 @@ namespace EmployeeRepositorys.Implement
         {
             try
             {
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+                using (IDbConnection connection = CreateConnection())
                 {
                     return connection.Query<EmployeeDesignation>("GetEmployeesDesignation", commandType: CommandType.StoredProcedure).ToList();
                 }
@@ -48,7 +52,7 @@ namespace EmployeeRepositorys.Implement
             try
             {
                 var parameter = new DynamicParameters();
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+                using (IDbConnection connection = CreateConnection())
                 {
                     parameter.Add("@Name", employee.Name);
                     parameter.Add("@DesignationId", employee.DesignationId);
@@ -57,7 +61,8 @@ namespace EmployeeRepositorys.Implement
                     parameter.Add("@DateOfBirth", employee.DateOfBirth);
                     parameter.Add("@Email", employee.Email);
                     parameter.Add("@Address", employee.Address);
-                    return connection.Query<EmployeeDetail>("AddNewEmpDetails", parameter, commandType: CommandType.StoredProcedure).ToList();
+                    return connection.Query<EmployeeDetail>("AddNewEmpDetails", parameter, commandType: CommandType.StoredProcedure)
+                        .ToList();
                 }
             }
             catch(Exception ex)
@@ -73,7 +78,7 @@ namespace EmployeeRepositorys.Implement
         {
             try
             {
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+                using (IDbConnection connection = CreateConnection())
                 {
                     return connection.Query<EmployeeDetail>("GetEmployees", commandType: CommandType.StoredProcedure).ToList();
                 }
@@ -93,7 +98,7 @@ namespace EmployeeRepositorys.Implement
             try
             {
                 var parameter = new DynamicParameters();
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+                using (IDbConnection connection = CreateConnection())
                 {
                     parameter.Add("@Id", id);
                     return connection.QuerySingleOrDefault<EmployeeDetail>("GetEmpById", parameter, commandType: CommandType.StoredProcedure);
@@ -114,7 +119,7 @@ namespace EmployeeRepositorys.Implement
             try
             {
                 var parameter = new DynamicParameters();
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+                using (IDbConnection connection = CreateConnection())
                 {
                     parameter.Add("@Id", employee.Id);
                     parameter.Add("@Name", employee.Name);
@@ -142,7 +147,7 @@ namespace EmployeeRepositorys.Implement
             try
             {
                 var parameter = new DynamicParameters();
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+                using (IDbConnection connection = CreateConnection())
                 {
                     parameter.Add("@Id", id);
                     return connection.QuerySingleOrDefault<EmployeeDetail>("DeleteEmpById", parameter, commandType: CommandType.StoredProcedure);

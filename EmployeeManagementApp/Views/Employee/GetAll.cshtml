@@ -1,14 +1,21 @@
 ﻿@model IEnumerable<EmployeeModels.ViewModel.EmployeeDetailView>
+
 @if (TempData["Success"] != null)
 {
-    <h2>@TempData["Success"]</h2>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        toastr.success('@TempData["Success"]')
+    </script>
 }
 @{
     ViewBag.Title = "GetAll";
 }
-<h2>GetAll</h2>
+<h2>Employee Management</h2>
 <p>
-    @Html.ActionLink("Create New", "AddEmployee")
+   
+    <button type="button" onclick="location.href='@Url.Action("AddEmployee")'" class="btn btn-primary">Create</button>
 </p>
 <table class="table">
     <tr>
@@ -63,9 +70,11 @@
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditEmployee", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "GetEmployeeById", new { id = item?.Id }) |
-                    <input type="submit" value="Delete" onclick="return confirm('Are you sure to delete ')" />
+                    
+                    <button type="button" onclick="location.href='@Url.Action("EditEmployee", new { id = item.Id })'" class="btn btn-primary">Edit</button>
+                   
+                    <button type="button" onclick="location.href='@Url.Action("GetEmployeeById", new { id = item.Id })'" class="btn btn-info">Detail</button>
+                    <input type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure to delete ')" />
                 </td>
             </tr>
         }

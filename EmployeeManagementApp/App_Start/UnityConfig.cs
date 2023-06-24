@@ -23,11 +23,6 @@ namespace EmployeeManagementApp
 
             Container.RegisterType<IEmployeeService, EmployeeService>();
             Container.RegisterType<IEmployeeRepository, EmployeeRepository>();
-            //string connectionString = "Data Source=localhost/SQLEXPRESS;Initial Catalog=EmpDb;Integrated Security=True";
-            //Container.RegisterType<EmployeeRepository>(new InjectionConstructor(connectionString));
-
-
-
             DependencyResolver.SetResolver(new UnityDependencyResolver(Container));
         }
     }

@@ -83,6 +83,8 @@ namespace EmployeeManagementApp.Controllers
             try
             {
                 var employees = _employeeService.GetEmployeeById(id);
+                var designations = _employeeService.GetDesignations();
+                ViewBag.Designations = new SelectList(designations, "DesignationId", "Designation");
                 if (employees == null)
                 {
                     ViewBag.ErrorMessage = "Employee is null";
@@ -140,6 +142,7 @@ namespace EmployeeManagementApp.Controllers
             {
                 throw ex; 
             }
+            TempData["Success"] = "Employee Deleted Successfully";
             return RedirectToAction("GetAll");
         }
         /// <summary>Gets all.</summary>
